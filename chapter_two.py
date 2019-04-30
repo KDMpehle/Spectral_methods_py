@@ -8,7 +8,7 @@ h, xmax = (1.,10.)
 x = np.arange(-xmax,xmax+h,h)#x-grid
 xx= np.arange(-xmax-h/20,xmax+h/20+h/10,h/10)#Grid for plotting
 fig = plt.figure(figsize =(24,8))
-for plot_range in range(3):
+for plot_range in range(3): #cases for various functions to interpolate.
     if plot_range == 0:
         v= np.where(abs(x) < 1e-6,1,0) # "impulse at origin.
     elif plot_range == 1:

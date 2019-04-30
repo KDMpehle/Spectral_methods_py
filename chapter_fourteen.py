@@ -7,7 +7,7 @@ from chapter_six import cheb
 from scipy.linalg import solve,eig
 from numpy.linalg import norm
 from scipy import interpolate
-program_number = 40 #select which program to run
+program_number = 38 #select which program to run
 
 if program_number == 38: # solve u_IV = exp(x) with clamped BC on [-1,1]
     N=15 #Chebychev points
@@ -22,18 +22,22 @@ if program_number == 38: # solve u_IV = exp(x) with clamped BC on [-1,1]
     f= np.exp(x[1:N])
     u= np.zeros(N+1)
     u[1:N]= solve(D4,f).flatten()
-    plt.plot(x,u,'x',color='red')
+    plt.plot(x,u,'o',color='red',ms = 6, label = 'grid solution')
     xx= np.linspace(-1,1,100)
     uu = (1-xx**2)*np.polyval(np.polyfit(x.flatten(),S.dot(u),N),xx)
-    plt.plot(xx,uu,'k')
-    plt.show()
+    plt.plot(xx,uu,'-',color = 'k',label = 'interpolated solution')
     #determine the exact solution and compare the error.
     A = np.array([[1,-1,1,-1],[0,1,-2,3],[1,1,1,1],[0,1,2,3]])
     V= np.vander(xx)
     V= V[:,:-5:-1] #last four columns of the vandermonde matrix.
     c= solve(A,np.exp(np.array([-1,-1,1,1])))
     uext = np.exp(xx) - V.dot(c) # exact solution
-    print(norm(uu- uext,np.inf)) # accuracy of 1E-15 for N = 15 points.
+    plt.title(r'solution of $u_{IV} = \exp(x)$')
+    plt.xlabel('x')
+    plt.ylabel('u')
+    plt.text(-.1,0.01,'maximum error is {:.4e}'.format(norm(uu- uext,np.inf)))
+    plt.legend(loc = 'lower center')
+    plt.show()
 
 elif program_number == 39: #Eigenvalues of the biharmonic operator on square with clamped BCs
     #something wrong: correct eigenvalues but eigenvectors odd...
@@ -79,6 +83,7 @@ elif program_number == 39: #Eigenvalues of the biharmonic operator on square wit
 elif program_number == 40:
     #Eigenvalues of the Orr-Sommerfeld operator
     Re = 5772# the Reynolds number.
+    fig = plt.figure(figsize = (16,8))
     for N in range(40,120,20):
         (D,x) = cheb(N) #number of Chebychev points (variable here).
         S = np.diag(np.insert(1./(1-x[1:N]**2),[0,len(x[1:N])],[0,0]))
@@ -92,12 +97,11 @@ elif program_number == 40:
         A = (D4 -2.*D2+I)/Re -2j*I-1j*np.dot(np.diag(1-xf[1:N]**2),D2-I)
         B = D2 - I
         W,V = eig(A,B)
-        plt.subplot(4,2,N/20-1)
+        plt.subplot(2,2,N/20-1)
         plt.xlim([-1,0.2])
         plt.ylim([-1,0])
         plt.scatter(np.real(W),np.imag(W))
-        print(np.max(np.real(W)))
-        #plt.title('max lamb = %15.11f"'%(np.max(np.real(W))))
+        plt.title(r'N= {:d}    $\max(\Re(\lambda))$ = {:e}'.format(N,np.max(np.real(W))))
     
     plt.show()
     
