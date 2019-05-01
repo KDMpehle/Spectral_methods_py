@@ -56,7 +56,7 @@ elif program_number == 19: # 2nd-order wave eq. on Chebychev grid (p6.m)
     t,tmax, tplot= (0,4, 0.075)
     plotgap, nplots = int(tplot/dt), int(tmax/tplot)
     plotgap, dt= int(tplot/dt), tplot/plotgap
-    data = np.zeros((nplots +1, N+1))
+    data = np.zeros((nplots +1, N+1)) # solution at each time step matrix.
     data[0,:] = v
     tdata = [t]
     for i in range(0,nplots):
