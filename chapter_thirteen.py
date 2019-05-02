@@ -1,5 +1,5 @@
 #Python scripts for chapter thirteen of Trefethen's 'spectral methods
-# in matlab', translated by Khaya Mpehle.
+# in matlab', translated by Khaya Mpehle
 #chapter thirteen: More about boundary conditions
 import numpy as np
 import matplotlib.pyplot as plt
